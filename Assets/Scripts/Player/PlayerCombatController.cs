@@ -23,6 +23,7 @@ public class PlayerCombatController : MonoBehaviour
             playerMovement.canMovement = false;
             if (playerMovement.isJumping)
             {
+                playerMovement.canMovement = true;
                 playerAnimator.SetBool(AnimatorNames.isWalking, false);
                 //playerMovement.moveSpeed = 4;
             }
