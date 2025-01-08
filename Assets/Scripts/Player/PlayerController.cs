@@ -70,10 +70,9 @@ public class PlayerController : MonoBehaviour
     
     void Update() 
     {
-        PlayerMovement();
         // Desenhando o OverlapCircle
         DrawCapsule(groundCheck.position, groundCheckWidth, groundCheckHeight); // Visualiza a área de verificação
-        OnAttack();
+        //OnAttack();
         wallCheck();
     }
 
@@ -106,67 +105,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         playerSprite.color = Color.white;
     }
-    
-    void PlayerMovement()
-    {
-        // Movimentação
-        float moveX = Input.GetAxisRaw("Horizontal");
-        if(!playerAnimator.GetBool(AnimatorStateInfo.playerAttack) && !canSecondAttack && !playerAnimator.GetBool("AttackThree") 
-           && !canThirdAttack && isGrounded && life > 0)
-        {
-            rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
-            
-            if (moveX < 0)
-            {
-                ChangePlayerStateMovement(-1, true);
-
-                if(Input.GetButtonDown("Fire3") && !hasJumped && !playerAnimator.GetBool(AnimatorStateInfo.playerAttack) && canRoll
-                   && !playerAnimator.GetBool(AnimatorStateInfo.playerRoll))
-                {
-                    canRoll = false;
-                    playerAnimator.SetBool(AnimatorStateInfo.playerRoll, true);
-                    moveSpeed += rollSpeed;
-                    StartCoroutine(PlayerRollDisable());
-                }
-
-            }
-            else if (moveX > 0)
-            {
-                ChangePlayerStateMovement(1, true);
-                
-                if(Input.GetButtonDown("Fire3") && !hasJumped && !playerAnimator.GetBool(AnimatorStateInfo.playerAttack) && canRoll
-                   && !playerAnimator.GetBool(AnimatorStateInfo.playerRoll))
-                {
-                    canRoll = false;
-                    playerAnimator.SetBool(AnimatorStateInfo.playerRoll, true);
-                    moveSpeed += rollSpeed;
-                    StartCoroutine(PlayerRollDisable());
-                }
-            }
-            else
-            {
-                canRoll = true;
-                playerAnimator.SetBool(AnimatorStateInfo.playerIdleToWalking, false);
-            }
-        }
-
-
-        // Verifica se o jogador está no chão
-        isGrounded = Physics2D.OverlapCapsule(groundCheck.position, 
-        new Vector2(groundCheckWidth, groundCheckHeight),CapsuleDirection2D.Horizontal, 0, groundLayer);
-
-        // Pulo
-        if (Input.GetButtonDown("Jump") && isGrounded && !hasJumped)
-        {
-            ApplyJumpForce();
-            hasJumped = true;
-        }
-        else if(!hasJumped && Input.GetButtonDown("Jump") && !isGrounded && canCoyoteJump)
-        {
-           ApplyJumpForce();
-        }
-
-    }
     //Cronometro para desativar a animação e o bonus de speed do rolamento
     private IEnumerator PlayerRollDisable()
     {
@@ -188,57 +126,10 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector3(playerDirection,1,1);
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if(col.gameObject.layer == 6)
-        {
-            hasJumped = false;
-            PlayerStateJumping(false);
-        }
-    }
-    private void OnCollisionExit2D(Collision2D col)
-    {
-        if(col.gameObject.layer == 6 && this.gameObject.activeSelf)
-        {
-            canCoyoteJump = true;
-            StartCoroutine("StartCoyoteTime");
-            PlayerStateJumping(true);
-        }
-    }
-    void PlayerStateJumping(bool isJumping)
-    {
-        playerAnimator.SetBool(AnimatorStateInfo.playerJump, isJumping);
-    }
-
     public int IncresePlayerDamage(int a, int b)
     {
         int playerDamageCritical = Random.Range(a, b);
         return playerDamageCritical;
-    }
-    
-    void OnAttack() 
-    {
-        if (Input.GetButtonDown("Fire1") && !playerAnimator.GetBool(AnimatorStateInfo.playerAttack)
-        && !playerAnimator.GetBool(AnimatorStateInfo.playerRoll) && !playerAnimator.GetBool("AttackTwo")
-        && !canThirdAttack)
-        {
-            StartCoroutine("AttackTime");
-            playerAnimator.SetBool(AnimatorStateInfo.playerAttack, true);
-            playerAnimator.SetBool(AnimatorStateInfo.playerIdleToWalking, false);
-        }
-        else if (Input.GetButtonDown("Fire1") && canSecondAttack && !canThirdAttack)
-        {
-            playerAnimator.SetBool(AnimatorStateInfo.playerAttackTwo, true);
-            StartCoroutine("SecondAttackTime");
-            playerDamage = IncresePlayerDamage(15, 25);
-        }
-        else if(Input.GetButtonDown("Fire1") && canThirdAttack)
-        {
-            playerAnimator.SetBool(AnimatorStateInfo.playerAttackThree, true);
-            CantCombo();
-            StartCoroutine("ThirdAttackTime");
-            playerDamage = IncresePlayerDamage(30, 35);
-        }
     }
     
     // método para ser chamado no animator e possibilitar o ataque numero 2    

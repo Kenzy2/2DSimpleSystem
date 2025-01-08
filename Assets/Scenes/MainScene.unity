@@ -615,6 +615,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &878605719 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 223390204016144355, guid: a468245bf9cae8d48848cf1fbfe9e5d6, type: 3}
+  m_PrefabInstance: {fileID: 1656078490}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &878605721 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 537566246, guid: a468245bf9cae8d48848cf1fbfe9e5d6, type: 3}
+  m_PrefabInstance: {fileID: 1656078490}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &878605727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878605719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3abff4c1dc1f24483c4a2fd595eef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duringAttack:
+  - 0.7
+  - 0.5
+  - 0.8
+  comboCooldown: 0.2
+  playerAnimator: {fileID: 878605721}
+  currentCombo: 1
 --- !u!224 &880323979 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 880323979, guid: 572edf13d514583428c19ba000bd105e, type: 3}
@@ -1222,6 +1251,10 @@ PrefabInstance:
     - target: {fileID: 3501543392107596066, guid: 572edf13d514583428c19ba000bd105e, type: 3}
       propertyPath: m_Name
       value: WarriorEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 3501543392107596066, guid: 572edf13d514583428c19ba000bd105e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3501543392107596069, guid: 572edf13d514583428c19ba000bd105e, type: 3}
       propertyPath: warriorDamage
