@@ -8,14 +8,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private PlayerCombatController playerCombatController;
 
-    private bool isJumping = false;
-    private bool canRoll = true;
+    public bool isJumping = false;
+    public bool canRoll = true;
+    public bool canMovement = true;
 
-    [SerializeField] private float moveSpeed;
+    [SerializeField] public float moveSpeed;
     [SerializeField] private float jumpForce;
-    [SerializeField] private float jumpTorque;
+    [SerializeField] private float rollTimer;
     [SerializeField] private float speedMultiplier;
+    public float moveX;
 
     void Update()
     {
@@ -25,29 +28,43 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayerMovementSystem()
     {
-        float moveX = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
-        if(moveX > 0)
+        if (!canMovement) // Impede o movimento
         {
-            playerTransform.localScale = new Vector3(moveX, 1, 1);
-            SetPlayerState(PlayerStatement.playerWalk, true);
-            PlayerRoll();
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            SetPlayerState(PlayerStatement.playerWalk, false);
+            return;
         }
-        else if(moveX < 0)
+        moveX = Input.GetAxisRaw("Horizontal");
+        rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
+
+        if (!playerCombatController.isAttacking && canMovement)
         {
-            playerTransform.localScale = new Vector3(moveX, 1, 1);
-            SetPlayerState(PlayerStatement.playerWalk, true);
-            PlayerRoll();
+            if (moveX > 0)
+            {
+                playerTransform.localScale = new Vector3(moveX, 1, 1);
+                SetPlayerState(PlayerStatement.playerWalk, true);
+                PlayerRoll();
+            }
+            else if (moveX < 0)
+            {
+                playerTransform.localScale = new Vector3(moveX, 1, 1);
+                SetPlayerState(PlayerStatement.playerWalk, true);
+                PlayerRoll();
+            }
+            else
+            {
+                SetPlayerState(PlayerStatement.playerWalk, false);
+            }
         }
         else
         {
-            SetPlayerState(PlayerStatement.playerWalk, false);
+            canRoll = false;
         }
     }
 
     void PlayerJump()
     {
-        if(Input.GetButtonDown("Jump") && !isJumping)
+        if (Input.GetButtonDown("Jump") && !isJumping)
         {
             isJumping = true;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -57,8 +74,9 @@ public class PlayerMovement : MonoBehaviour
 
     bool PlayerRoll()
     {
-        if(!isJumping && canRoll && Input.GetButtonDown("Fire3"))
+        if (!isJumping && canRoll && Input.GetButtonDown("Fire3"))
         {
+            playerCombatController.canAttack = false;
             moveSpeed *= speedMultiplier;
             canRoll = false;
             SetPlayerState(PlayerStatement.playerRoll, true);
@@ -70,15 +88,16 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator SetPlayerRoll()
     {
-        yield return new WaitForSeconds(jumpTorque);
+        yield return new WaitForSeconds(rollTimer);
         SetPlayerState(PlayerStatement.playerRoll, false);
         moveSpeed /= speedMultiplier;
+        playerCombatController.canAttack = true;
         canRoll = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == 6)
         {
             SetPlayerState(PlayerStatement.playerJump, false);
             isJumping = false;

@@ -641,9 +641,45 @@ MonoBehaviour:
   - 0.7
   - 0.5
   - 0.8
-  comboCooldown: 0.2
   playerAnimator: {fileID: 878605721}
+  playerMovement: {fileID: 878605734}
   currentCombo: 1
+  isAttacking: 0
+  canAttack: 1
+--- !u!50 &878605731 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 537566244, guid: a468245bf9cae8d48848cf1fbfe9e5d6, type: 3}
+  m_PrefabInstance: {fileID: 1656078490}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &878605733 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1043976580115473308, guid: a468245bf9cae8d48848cf1fbfe9e5d6, type: 3}
+  m_PrefabInstance: {fileID: 1656078490}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &878605734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878605719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7cb065b287ae084ab872e643d743133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 878605731}
+  playerTransform: {fileID: 878605733}
+  playerAnimator: {fileID: 878605721}
+  playerCombatController: {fileID: 878605727}
+  isJumping: 0
+  canRoll: 1
+  canMovement: 1
+  moveSpeed: 4
+  jumpForce: 10.5
+  rollTimer: 0.6
+  speedMultiplier: 2
+  moveX: 0
 --- !u!224 &880323979 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 880323979, guid: 572edf13d514583428c19ba000bd105e, type: 3}
