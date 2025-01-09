@@ -101,6 +101,10 @@ public class PlayerMovement : MonoBehaviour
         {
             SetPlayerState(PlayerStatement.playerJump, false);
             isJumping = false;
+            if (playerCombatController.canAttack) 
+            {
+                canRoll = true;
+            }
         }
     }
 

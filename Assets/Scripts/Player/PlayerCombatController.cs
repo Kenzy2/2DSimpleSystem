@@ -5,6 +5,7 @@ public class PlayerCombatController : MonoBehaviour
 {
 
     [SerializeField] private float[] duringAttack;
+    [SerializeField] private int[] bonusDamage;
 
     public Animator playerAnimator;
     [SerializeField] private PlayerMovement playerMovement;
@@ -13,6 +14,9 @@ public class PlayerCombatController : MonoBehaviour
 
     [SerializeField] public bool isAttacking = false;
     [SerializeField] public bool canAttack = true;
+
+    [SerializeField] public int playerDamage;
+    [SerializeField] int damageIncrease;
 
 
     void Update()
@@ -46,17 +50,18 @@ public class PlayerCombatController : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && !isAttacking && currentCombo == 1 && canAttack)
         {
             canAttack = false;
-            SetPlayerAttack(AnimatorNames.isAttackingOne, 0);
+            SetPlayerAttack(AnimatorNames.isAttackingOne, 0, bonusDamage[0]);
+            playerDamage = 7;
         }
         else if (Input.GetButtonDown("Fire1") && !isAttacking && currentCombo == 2 && canAttack)
         {
             canAttack = false;
-            SetPlayerAttack(AnimatorNames.isAttackingTwo, 1);
+            SetPlayerAttack(AnimatorNames.isAttackingTwo, 0, bonusDamage[1]);
         }
         else if (Input.GetButtonDown("Fire1") && !isAttacking && currentCombo == 3 && canAttack)
         {
             canAttack = false;
-            SetPlayerAttack(AnimatorNames.isAttackingThree, 2);
+            SetPlayerAttack(AnimatorNames.isAttackingThree, 0, bonusDamage[2]);
         }
         if (currentCombo > 3)
         {
@@ -65,8 +70,9 @@ public class PlayerCombatController : MonoBehaviour
         playerMovement.canMovement = false;
     }
 
-    void SetPlayerAttack(string animName, int currentAttack)
+    void SetPlayerAttack(string animName, int currentAttack, int playerBonusDamage)
     {
+        playerDamage += UnityEngine.Random.Range(playerDamage, playerBonusDamage);
         playerAnimator.SetTrigger(animName);
         StartCoroutine(ResetAttack(animName, currentAttack));
         canAttack = true;

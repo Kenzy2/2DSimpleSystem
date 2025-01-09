@@ -8,7 +8,7 @@ using AudioClip = UnityEngine.AudioClip;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public PlayerController playerAttack;
+    public PlayerCombatController playerCombatController;
     [SerializeField] float swordRadius;
     public LayerMask enemyLayers;
     [SerializeField] private TextMeshProUGUI comboDamageText;
@@ -20,9 +20,10 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private List<AudioClip> _audioClips = new List<AudioClip>();
 
     [SerializeField] private AudioClip airAttack;
+
     public void ActivateAttackTrigger()
     {
-        var AttackingEnemy = Physics2D.OverlapCircle(transform.position, swordRadius, playerAttack.enemyLayer);
+        var AttackingEnemy = Physics2D.OverlapCircle(transform.position, swordRadius, enemyLayers);
         if (AttackingEnemy)
         {
             if (_audioClips.Count == 0)
@@ -35,8 +36,8 @@ public class PlayerAttack : MonoBehaviour
                 swordSound.Play();
                 _audioClips.RemoveAt(0);
             }
-            comboDamageText.text = "Dano: " + playerAttack.playerDamage;
-            AttackingEnemy.GetComponent<EnemyController>().takeDamage(playerAttack.playerDamage);
+            comboDamageText.text = "Dano: " + playerCombatController.playerDamage;
+            AttackingEnemy.GetComponent<EnemyController>().takeDamage(playerCombatController.playerDamage);
         }
         else
         {
