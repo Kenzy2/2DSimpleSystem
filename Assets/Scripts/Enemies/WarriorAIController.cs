@@ -37,6 +37,7 @@ public class WarriorAIController : MonoBehaviour
 
     private PlayerController playerController;
     private EnemyController _enemyController;
+    private PlayerCombatController _playerCombatController;
 
     [SerializeField] private AudioSource warriorAttack;
     [SerializeField] private AudioClip[] attacks;
@@ -47,6 +48,7 @@ public class WarriorAIController : MonoBehaviour
         _enemyController = GetComponent<EnemyController>();
         warriorAnimator = GetComponent<Animator>();
         playerTransform = FindObjectOfType<PlayerController>().transform;
+        _playerCombatController = FindObjectOfType<PlayerCombatController>();
     }
 
     void Start()
@@ -159,7 +161,7 @@ public class WarriorAIController : MonoBehaviour
         var circleTrigger = Physics2D.OverlapCircle(attackPoint.position, attackRange, playerLayer);
         if (circleTrigger)
         {
-            playerController.PlayerTakeDamage(warriorDamage);
+            _playerCombatController.PlayerTakeDamage(10);
             circleTrigger.GetComponent<PlayerController>();
             warriorAttack.PlayOneShot(attacks[1]);
         }

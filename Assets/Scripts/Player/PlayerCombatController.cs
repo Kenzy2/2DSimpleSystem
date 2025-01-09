@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCombatController : MonoBehaviour
 {
@@ -14,9 +15,13 @@ public class PlayerCombatController : MonoBehaviour
 
     [SerializeField] public bool isAttacking = false;
     [SerializeField] public bool canAttack = true;
+    [SerializeField] public bool isPlayerAlive = true;
 
     [SerializeField] public int playerDamage;
     [SerializeField] int damageIncrease;
+
+    [SerializeField] public int playerLife = 100;
+    [SerializeField] private Image playerHealthBar;
 
 
     void Update()
@@ -42,6 +47,19 @@ public class PlayerCombatController : MonoBehaviour
             playerMovement.canMovement = true;
             playerAnimator.SetBool(AnimatorNames.isWalking, true);
             //playerMovement.moveSpeed = 4;
+        }
+
+        playerHealthBar.fillAmount = playerLife / 100f;
+    }
+
+    public void PlayerTakeDamage(int damage)
+    {
+        playerLife -= damage;
+        if(playerLife <= 0)
+        {
+            playerMovement.canMovement = false;
+            playerAnimator.Play("HeroKnight_Death");
+            StartCoroutine(PlayerDeath());  
         }
     }
 
@@ -86,6 +104,12 @@ public class PlayerCombatController : MonoBehaviour
         yield return new WaitForSeconds(duringAttack[currentAttack]);
         isAttacking = false;
         //playerAnimator.SetTrigger(animationForDisable);
+    }
+
+    IEnumerator PlayerDeath()
+    {
+        yield return new WaitForSeconds(.9f);
+        isPlayerAlive = false;
     }
 
     public class AnimatorNames

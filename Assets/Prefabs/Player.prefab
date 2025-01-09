@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.0047169924, b: 0.0047169924, a: 1}
+  m_Color: {r: 0.1253942, g: 0.5283019, b: 0.10715558, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: affda510209c6da418ea641aec979d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAttack: {fileID: 537566241}
+  playerCombatController: {fileID: 878605727}
   swordRadius: 0.7
   enemyLayers:
     serializedVersion: 2
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.4811321, g: 0.070354216, b: 0.070354216, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -581,6 +581,8 @@ GameObject:
   - component: {fileID: 537566247}
   - component: {fileID: 537566246}
   - component: {fileID: 219454787}
+  - component: {fileID: 878605727}
+  - component: {fileID: 878605734}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -855,3 +857,51 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &878605727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223390204016144355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3abff4c1dc1f24483c4a2fd595eef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duringAttack:
+  - 0.6
+  - 0.7
+  - 0.8
+  bonusDamage: 0a0000001000000017000000
+  playerAnimator: {fileID: 537566246}
+  playerMovement: {fileID: 878605734}
+  currentCombo: 1
+  isAttacking: 0
+  canAttack: 1
+  playerDamage: 7
+  damageIncrease: 0
+--- !u!114 &878605734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223390204016144355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7cb065b287ae084ab872e643d743133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 537566244}
+  playerTransform: {fileID: 1043976580115473308}
+  playerAnimator: {fileID: 537566246}
+  playerCombatController: {fileID: 878605727}
+  isJumping: 0
+  canRoll: 1
+  canMovement: 1
+  moveSpeed: 4
+  jumpForce: 10.5
+  rollTimer: 0.6
+  speedMultiplier: 2
+  moveX: 0

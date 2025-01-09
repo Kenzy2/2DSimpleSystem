@@ -6,16 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] PlayerController _playerController;
+    private PlayerCombatController controller;
 
     private void Awake()
     {
-        _playerController = FindObjectOfType<PlayerController>();
+        controller = FindObjectOfType<PlayerCombatController>();
     }
 
     private void Update()
     {
-        if (!_playerController.isPlayerAlive)
+        if (!controller.isPlayerAlive)
             SceneManager.LoadScene(0);
         else if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene(0);

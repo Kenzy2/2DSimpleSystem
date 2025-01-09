@@ -119,7 +119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &818672595
 RectTransform:
   m_ObjectHideFlags: 0
@@ -137,7 +137,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.00015258789}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &818672597
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -204,7 +204,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 880323978}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -245,11 +245,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 33dccf83b7f7f294992c97ebe1990464, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -424,6 +424,7 @@ MonoBehaviour:
   damageParticle: {fileID: 3501543392432706222}
   fonte: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
   attackSoundEffect: {fileID: 0}
+  healthBar: {fileID: 880323980}
 --- !u!95 &3501543392107596068
 Animator:
   serializedVersion: 5
@@ -462,7 +463,7 @@ MonoBehaviour:
   distanceAttack: 2.33
   timeToAttack: 2
   attackRange: 0.54
-  warriorDamage: 35
+  warriorDamage: 25
   canAttack: 1
   wallLayer:
     serializedVersion: 2
@@ -475,7 +476,7 @@ MonoBehaviour:
   warriorAttack: {fileID: 1982373623}
   attacks:
   - {fileID: 8300000, guid: 8e207c26833f9134b877aca6c65eb4c1, type: 3}
-  - {fileID: 8300000, guid: 4290ec117cf9e8a43b4a3a40fcc72814, type: 3}
+  - {fileID: 8300000, guid: eb4c605fade8f7a4d86f1c1b5c449482, type: 3}
 --- !u!82 &1982373623
 AudioSource:
   m_ObjectHideFlags: 0
