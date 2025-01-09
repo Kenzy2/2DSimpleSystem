@@ -61,6 +61,7 @@ public class PlayerCombatController : MonoBehaviour
             playerAnimator.Play("HeroKnight_Death");
             StartCoroutine(PlayerDeath());  
         }
+        playerMovement.PlayerKnockback();
     }
 
     void OnAttack()

@@ -9,15 +9,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private PlayerCombatController playerCombatController;
+    [SerializeField] private WarriorAIController warriorAIController;
 
     public bool isJumping = false;
     public bool canRoll = true;
     public bool canMovement = true;
+    public bool isRight = true;
+    public bool isKnockbackActive = false;
 
     [SerializeField] public float moveSpeed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float rollTimer;
     [SerializeField] private float speedMultiplier;
+    [SerializeField] private float knockbackForce;
+    [SerializeField] private float knockbackTimer;
+    [SerializeField] private float knockbackDuration;
     public float moveX;
 
     void Update()
@@ -28,6 +34,16 @@ public class PlayerMovement : MonoBehaviour
 
     void PlayerMovementSystem()
     {
+        if (isKnockbackActive)
+        {
+            knockbackTimer -= Time.deltaTime;
+            if(knockbackTimer <= 0)
+            {
+                isKnockbackActive = false;
+                canMovement = true;
+            }
+            return;
+        }
         if (!canMovement) // Impede o movimento
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
@@ -35,21 +51,23 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
         moveX = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
 
-        if (!playerCombatController.isAttacking && canMovement)
+        if (!playerCombatController.isAttacking && canMovement && !isKnockbackActive)
         {
+            rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
             if (moveX > 0)
             {
                 playerTransform.localScale = new Vector3(moveX, 1, 1);
                 SetPlayerState(PlayerStatement.playerWalk, true);
                 PlayerRoll();
+                isRight = true;
             }
             else if (moveX < 0)
             {
                 playerTransform.localScale = new Vector3(moveX, 1, 1);
                 SetPlayerState(PlayerStatement.playerWalk, true);
                 PlayerRoll();
+                isRight = false;
             }
             else
             {
@@ -60,6 +78,17 @@ public class PlayerMovement : MonoBehaviour
         {
             canRoll = false;
         }
+    }
+
+    public void PlayerKnockback()
+    {
+        isKnockbackActive = true;
+        canMovement = false;
+        knockbackTimer = knockbackDuration;
+        if(warriorAIController.isRight)
+            rb.AddForce(Vector2.right * knockbackForce, ForceMode2D.Impulse);
+        else 
+            rb.AddForce(Vector2.left * knockbackForce, ForceMode2D.Impulse);
     }
 
     void PlayerJump()

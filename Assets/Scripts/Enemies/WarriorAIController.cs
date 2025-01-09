@@ -20,6 +20,7 @@ public class WarriorAIController : MonoBehaviour
     [SerializeField] int warriorDamage = 35;
 
     [SerializeField] bool canAttack;
+    [SerializeField] public bool isRight;
 
     [SerializeField] LayerMask wallLayer;
     [SerializeField] LayerMask playerLayer;
@@ -149,10 +150,12 @@ public class WarriorAIController : MonoBehaviour
         if (positionX.x <= 0)
         {
             transform.localScale = new Vector3(-1, 1, 1);
+            isRight = false;
         }
         else
         {
             transform.localScale = new Vector3(1, 1, 1);
+            isRight = true;
         }
     }
 
