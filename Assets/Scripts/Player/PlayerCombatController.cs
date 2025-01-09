@@ -70,7 +70,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             canAttack = false;
             SetPlayerAttack(AnimatorNames.isAttackingOne, 0, bonusDamage[0]);
-            playerDamage = 7;
+            playerDamage = 10;
         }
         else if (Input.GetButtonDown("Fire1") && !isAttacking && currentCombo == 2 && canAttack)
         {
