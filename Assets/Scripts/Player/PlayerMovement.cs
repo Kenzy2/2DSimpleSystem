@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,15 +17,19 @@ public class PlayerMovement : MonoBehaviour
     public bool canMovement = true;
     public bool isRight = true;
     public bool isKnockbackActive = false;
+    public bool canBlock = false;
+    public bool isBlocking = false;
 
     [SerializeField] public float moveSpeed;
+    [SerializeField] public float moveX;
+
     [SerializeField] private float jumpForce;
     [SerializeField] private float rollTimer;
     [SerializeField] private float speedMultiplier;
     [SerializeField] private float knockbackForce;
     [SerializeField] private float knockbackTimer;
     [SerializeField] private float knockbackDuration;
-    public float moveX;
+
 
     void Update()
     {
@@ -37,10 +42,12 @@ public class PlayerMovement : MonoBehaviour
         if (isKnockbackActive)
         {
             knockbackTimer -= Time.deltaTime;
+            SetPlayerState(PlayerStatement.playerWalk, false);
             if(knockbackTimer <= 0)
             {
                 isKnockbackActive = false;
                 canMovement = true;
+                return;
             }
             return;
         }
@@ -61,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
                 SetPlayerState(PlayerStatement.playerWalk, true);
                 PlayerRoll();
                 isRight = true;
+                canBlock = false;
             }
             else if (moveX < 0)
             {
@@ -68,10 +76,12 @@ public class PlayerMovement : MonoBehaviour
                 SetPlayerState(PlayerStatement.playerWalk, true);
                 PlayerRoll();
                 isRight = false;
+                canBlock = false;
             }
             else
             {
                 SetPlayerState(PlayerStatement.playerWalk, false);
+                PlayerBlockDamage();
             }
         }
         else
@@ -80,6 +90,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void PlayerBlockDamage()
+    {
+        if(!playerAnimator.GetBool(PlayerStatement.playerWalk))
+        {
+            canBlock = true;
+            if (Input.GetKeyDown(KeyCode.E) && canBlock && !isBlocking)
+            {
+                StartCoroutine(SetPlayerBlock());
+            }
+            else if(!canBlock){
+                playerAnimator.SetBool(PlayerStatement.playerBlock, false);
+            }
+        }
+
+    }
     public void PlayerKnockback()
     {
         isKnockbackActive = true;
@@ -115,6 +140,28 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
+    private IEnumerator PlayerBlockCooldown()
+    {
+        yield return new WaitForSeconds(1);
+        canBlock = true;
+    }
+
+    private IEnumerator SetPlayerBlock()
+    {
+        isBlocking = true;
+        SetPlayerState (PlayerStatement.playerBlock, true);
+        canBlock = false;
+
+        yield return new WaitForSeconds(.5f);
+
+        SetPlayerState(PlayerStatement.playerBlock, false);
+        
+        yield return new WaitForSeconds(.5f);
+
+        canBlock = true;
+        isBlocking = false;
+    }
+
     private IEnumerator SetPlayerRoll()
     {
         yield return new WaitForSeconds(rollTimer);
@@ -130,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
         {
             SetPlayerState(PlayerStatement.playerJump, false);
             isJumping = false;
-            if (playerCombatController.canAttack) 
+            if (!playerAnimator.GetBool(PlayerStatement.playerWalk)) 
             {
                 canRoll = true;
             }
@@ -142,10 +189,11 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator.SetBool(animName, setStatement);
     }
 
-    public class PlayerStatement
+    private class PlayerStatement
     {
         public const string playerWalk = "playerWalk";
         public const string playerRoll = "playerRoll";
         public const string playerJump = "playerJump";
+        public const string playerBlock = "playerBlock";
     }
 }

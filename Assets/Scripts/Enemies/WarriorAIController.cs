@@ -164,7 +164,7 @@ public class WarriorAIController : MonoBehaviour
         var circleTrigger = Physics2D.OverlapCircle(attackPoint.position, attackRange, playerLayer);
         if (circleTrigger)
         {
-            _playerCombatController.PlayerTakeDamage(10);
+            _playerCombatController.PlayerTakeDamage(warriorDamage);
             circleTrigger.GetComponent<PlayerController>();
             warriorAttack.PlayOneShot(attacks[1]);
         }

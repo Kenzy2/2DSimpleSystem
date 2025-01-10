@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,18 +13,18 @@ public class PlayerCombatController : MonoBehaviour
     public Animator playerAnimator;
     [SerializeField] private PlayerMovement playerMovement;
 
-    [SerializeField] private int currentCombo = 1;
-
     [SerializeField] public bool isAttacking = false;
     [SerializeField] public bool canAttack = true;
     [SerializeField] public bool isPlayerAlive = true;
 
-    [SerializeField] public int playerDamage;
-    [SerializeField] int damageIncrease;
 
     [SerializeField] public int playerLife = 100;
-    [SerializeField] private Image playerHealthBar;
+    [SerializeField] public int playerDamage;
+    [SerializeField] int currentCombo = 1;
 
+    [SerializeField] private Image playerHealthBar;
+    //[SerializeField] private TextMeshProUGUI enemyDamageText;
+    [SerializeField] private GameObject damagePrefab;
 
     void Update()
     {
@@ -34,19 +36,16 @@ public class PlayerCombatController : MonoBehaviour
             {
                 playerMovement.canMovement = true;
                 playerAnimator.SetBool(AnimatorNames.isWalking, false);
-                //playerMovement.moveSpeed = 4;
             }
             else
             {
                 playerAnimator.SetBool(AnimatorNames.isWalking, false);
-                //playerMovement.moveSpeed *= 0;
             }
         }
         else
         {
             playerMovement.canMovement = true;
-            playerAnimator.SetBool(AnimatorNames.isWalking, true);
-            //playerMovement.moveSpeed = 4;
+            //playerAnimator.SetBool(AnimatorNames.isWalking, true);
         }
 
         playerHealthBar.fillAmount = playerLife / 100f;
@@ -54,7 +53,11 @@ public class PlayerCombatController : MonoBehaviour
 
     public void PlayerTakeDamage(int damage)
     {
-        playerLife -= damage;
+        if(!playerAnimator.GetBool(AnimatorNames.playerBlock))
+        {
+            ShowFloatingText(damage);
+            playerLife -= damage;
+        }
         if(playerLife <= 0)
         {
             playerMovement.canMovement = false;
@@ -62,6 +65,12 @@ public class PlayerCombatController : MonoBehaviour
             StartCoroutine(PlayerDeath());  
         }
         playerMovement.PlayerKnockback();
+    }
+
+    void ShowFloatingText(int lastEnemyDamage)
+    {
+        GameObject enemyDamageTextPrefab = Instantiate(damagePrefab, transform.position, Quaternion.identity);
+        enemyDamageTextPrefab.GetComponent<TextMeshPro>().text = lastEnemyDamage.ToString();
     }
 
     void OnAttack()
@@ -119,5 +128,6 @@ public class PlayerCombatController : MonoBehaviour
         public const string isAttackingTwo = "AttackTwo";
         public const string isAttackingThree = "AttackThree";
         public const string isWalking = "playerWalk";
+        public const string playerBlock = "playerBlock";
     }
 }

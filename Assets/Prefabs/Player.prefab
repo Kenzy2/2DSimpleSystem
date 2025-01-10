@@ -446,7 +446,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -677,7 +677,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 1
   m_GravityScale: 4
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9c497a4ce1f356b448c0dd3eca091d35, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -870,17 +870,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duringAttack:
-  - 0.6
-  - 0.7
-  - 0.8
+  - 0.4
+  - 0.4
+  - 0.4
   bonusDamage: 0a0000001000000017000000
   playerAnimator: {fileID: 537566246}
   playerMovement: {fileID: 878605734}
-  currentCombo: 1
   isAttacking: 0
   canAttack: 1
+  isPlayerAlive: 1
+  playerLife: 100
   playerDamage: 7
-  damageIncrease: 0
+  currentCombo: 1
+  playerHealthBar: {fileID: 33315555}
+  damagePrefab: {fileID: 5643659465703650933, guid: 4180cce8daa9cb74d8ea5c06e1003452, type: 3}
 --- !u!114 &878605734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -897,11 +900,19 @@ MonoBehaviour:
   playerTransform: {fileID: 1043976580115473308}
   playerAnimator: {fileID: 537566246}
   playerCombatController: {fileID: 878605727}
+  warriorAIController: {fileID: 0}
   isJumping: 0
   canRoll: 1
   canMovement: 1
+  isRight: 1
+  isKnockbackActive: 0
+  canBlock: 1
+  isBlocking: 0
   moveSpeed: 4
+  moveX: 0
   jumpForce: 10.5
   rollTimer: 0.6
   speedMultiplier: 2
-  moveX: 0
+  knockbackForce: 5
+  knockbackTimer: 0
+  knockbackDuration: 0.3
